@@ -3,3 +3,14 @@
     margin: 0;
     box-sizing: border-box;
 }
+
+/* body{
+    color: aqua;
+} */
+
+span.manditory{
+    color: red;
+}
+/* span{
+    color: red;
+} */

@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+require('./db/connectvity');
+const users = require('./db/users');
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))  // nessary to use when you using from to get the data
@@ -9,12 +12,13 @@ app.get('/', (req, res)=>{
     res.render('index');
 })
 
-app.post('/formSubmition', (req, res)=>{
-    // res.writeHead(200, {"Content-Type":'application/json'})
-    var data = req.body;
+app.post('/formSubmition', async(req, res)=>{
+    res.writeHead(200, {"Content-Type":'application/json'})
     console.log(req.body);
-    res.send('index');
-    res.sendStatus(200);
+    const data = new users(req.body);
+    const result = await data.save();
+    console.log(result);
+    res.render('login');
 })
 
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 require('./db/connectvity');
+const usersData = require('./db/usersData');
 const users = require('./db/users');
 
 
@@ -13,9 +14,8 @@ app.get('/', (req, res)=>{
 })
 
 app.post('/formSubmition', async(req, res)=>{
-    res.writeHead(200, {"Content-Type":'application/json'})
-    console.log(req.body);
-    const data = new users(req.body);
+    // console.log(req.body);
+    const data = new usersData(req.body);
     const result = await data.save();
     console.log(result);
     res.render('login');
@@ -23,11 +23,28 @@ app.post('/formSubmition', async(req, res)=>{
 
 
 app.get('/signup' , (req, res)=>{
-    res.render('signUp')
+    res.render('signUp');
+})
+
+app.post('/signuping', async(req, res)=>{
+    console.log(" fuck me")
+    const data = new users(req.body);
+    const result =  await data.save();
+    // res.render('index');
+    res.send("u r succesfully signed up ");
 })
 
 app.get('/login' , (req, res)=>{
-    res.render('login')
+    res.render('login');
+})
+
+app.post('/loginAuth', async(req,res)=>{
+    console.log(req.body.email)
+    const data = await users.findOne({email:req.body.email})
+    if(data == null){
+        res.render('login');
+    }
+    res.redirect('/')
 })
 
 app.listen(7000);

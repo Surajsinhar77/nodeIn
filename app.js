@@ -18,4 +18,12 @@ app.post('/formSubmition', (req, res)=>{
 })
 
 
+app.get('/signup' , (req, res)=>{
+    res.render('signUp')
+})
+
+app.get('/login' , (req, res)=>{
+    res.render('login')
+})
+
 app.listen(7000);

@@ -3,11 +3,23 @@ const app = express();
 require('./db/connectvity');
 const usersData = require('./db/usersData');
 const users = require('./db/users');
-
+const session = require('express-session');
+const flash = require('express-flash');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))  // nessary to use when you using from to get the data
 app.set('view engine' , 'ejs');
+app.use(flash({ key: 'myapp_messages',
+    retries: 2,
+    expires: 5000
+}));
+
+
+app.use(session({
+    secret: 'secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.get('/', (req, res)=>{
     res.render('index');
@@ -27,11 +39,11 @@ app.get('/signup' , (req, res)=>{
 })
 
 app.post('/signuping', async(req, res)=>{
-    console.log(" fuck me")
+    console.log("here i am ")
     const data = new users(req.body);
     const result =  await data.save();
-    // res.render('index');
-    res.send("u r succesfully signed up ");
+    req.flash('success' , 'You are sucessFull SignUp');
+    res.redirect('/');
 })
 
 app.get('/login' , (req, res)=>{
